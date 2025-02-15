@@ -12,8 +12,8 @@ import (
 	"testing"
 	"time"
 
-	. "github.com/miltoncandelero/squirrelnoise5"
-	cgo "github.com/miltoncandelero/squirrelnoise5/cgo"
+	. "github.com/miltoncandelero/squirrelnoise5-go"
+	cgo "github.com/miltoncandelero/squirrelnoise5-go/cgo"
 )
 
 // These tests compare the golang with the CGO implementation to try to ensure consistency.
