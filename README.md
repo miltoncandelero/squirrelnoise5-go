@@ -1,5 +1,7 @@
 # SquirrelNoise5-go - Squirrel's Raw Noise utilities (version 5)
 
+`go get github.com/miltoncandelero/squirrelnoise5-go`
+
 Original code written by Eiserloh Squirrel is made available under the Creative Commons attribution 3.0 license (CC-BY-3.0 US)
 
 This GO port is licensed under the MIT Licence.

@@ -7,24 +7,20 @@
 
 package squirrelnoise5
 
-// -----------------------------------------------------------------------------------------------
 // Fast hash of an int32 into a different (unrecognizable) uint32.
 //
 // Returns an unsigned integer containing 32 reasonably-well-scrambled bits, based on the hash
-//	of a given (signed) integer input parameter (position/index) and [optional] seed.  Kind of
-//	like looking up a value in an infinitely large table of previously generated random numbers.
-//
-// I call this particular approach SquirrelNoise5 (5th iteration of my 1D raw noise function).
+// of a given (signed) integer input parameter (position/index) and [optional] seed.  Kind of
+// like looking up a value in an infinitely large table of previously generated random numbers.
 //
 // Many thanks to Peter Schmidt-Nielsen whose outstanding analysis helped identify a weakness
-//	in the SquirrelNoise3 code I originally used in my GDC 2017 talk, "Noise-based RNG".
-//	Version 5 avoids a noise repetition found in version 3 at extremely high position values
-//	caused by a lack of influence by some of the high input bits onto some of the low output bits.
+// in the SquirrelNoise3 code I originally used in my GDC 2017 talk, "Noise-based RNG".
+// Version 5 avoids a noise repetition found in version 3 at extremely high position values
+// caused by a lack of influence by some of the high input bits onto some of the low output bits.
 //
 // The revised SquirrelNoise5 function ensures all input bits affect all output bits, and to
-//	(for me) a statistically acceptable degree.  I believe the worst-case here is in the amount
-//	of influence input position bit #30 has on output noise bit #0 (49.99%, vs. 50% ideal).
-// -----------------------------------------------------------------------------------------------
+// (for me) a statistically acceptable degree.  I believe the worst-case here is in the amount
+// of influence input position bit #30 has on output noise bit #0 (49.99%, vs. 50% ideal).
 func SquirrelNoise5(positionX int32, seed uint32) uint32 {
 	const Sq5BitNoise1 uint32 = 0xd2a80a3f // 11010010101010000000101000111111
 	const Sq5BitNoise2 uint32 = 0xa884f197 // 10101000100001001111000110010111
@@ -48,9 +44,7 @@ func SquirrelNoise5(positionX int32, seed uint32) uint32 {
 	return mangledBits
 }
 
-// -----------------------------------------------------------------------------------------------
 // Raw pseudorandom noise functions (random-access / deterministic).  Basis of all other noise.
-// -----------------------------------------------------------------------------------------------
 func Get1dNoiseUint(positionX int32, seed uint32) uint32 {
 	return SquirrelNoise5(positionX, seed)
 }
@@ -73,9 +67,7 @@ func Get4dNoiseUint(indexX int32, indexY int32, indexZ int32, indexT int32, seed
 	return SquirrelNoise5(indexX+(Prime1*indexY)+(Prime2*indexZ)+(Prime3*indexT), seed)
 }
 
-// -----------------------------------------------------------------------------------------------
 // Functions mapped to floats in [0,1] for convenience. Both limits are **inclusive**.
-// -----------------------------------------------------------------------------------------------
 func Get1dNoiseZeroToOne(index int32, seed uint32) float32 {
 	const OneOverMaxUint = 1.0 / float64(0xFFFFFFFF)
 	return float32(OneOverMaxUint * float64(SquirrelNoise5(index, seed)))
@@ -96,9 +88,7 @@ func Get4dNoiseZeroToOne(indexX int32, indexY int32, indexZ int32, indexT int32,
 	return float32(OneOverMaxUint * float64(Get4dNoiseUint(indexX, indexY, indexZ, indexT, seed)))
 }
 
-// -----------------------------------------------------------------------------------------------
 // Functions mapped to floats in [-1,1] for convenience. Both limits are **inclusive**.
-// -----------------------------------------------------------------------------------------------
 func Get1dNoiseNegOneToOne(index int32, seed uint32) float32 {
 	const OneOverMaxInt = 1.0 / float64(0x7FFFFFFF)
 	return float32(OneOverMaxInt * float64(int32(SquirrelNoise5(index, seed))))
